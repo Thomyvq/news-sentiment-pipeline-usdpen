@@ -50,11 +50,9 @@ El objetivo es apoyar decisiones analíticas en Tesorería mediante señales int
 
 # \## 🧠 Arquitectura del Sistema
 
-# 
-
 # <p align="center">
 
-# &#x20; <img src="figs/arquitectura\_pipeline.png" width="900">
+# &#x20; <img src="figs/arquitectura_pipeline.png" width="900">
 
 # </p>
 
