@@ -153,8 +153,8 @@ news-sentiment-pipeline/
 
 ## ▶️ Ejecución
 
-pip install -r requirements.txt
-python run_pipeline.py
+- pip install -r requirements.txt
+- python run_pipeline.py
 
 ## 📊 Resultados Iniciales
 
