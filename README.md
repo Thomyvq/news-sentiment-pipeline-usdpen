@@ -47,6 +47,48 @@ El objetivo es apoyar decisiones analíticas en Tesorería mediante señales int
 
 ---
 
+# 📊Dataset del Proyecto
+
+Este proyecto utiliza noticias macroeconómicas formales en español e inglés para construir indicadores diarios de sentimiento asociados al análisis del tipo de cambio USD/PEN.
+
+## Fuentes
+
+Las noticias provienen de fuentes económicas formales mediante RSS y scraping.
+
+## Archivos generados localmente
+
+- `data/raw/news_raw.csv`  
+  Noticias obtenidas directamente desde las fuentes RSS y scraping, sin procesamiento inicial.
+
+- `data/processed/news_clean.csv`  
+  Noticias luego del proceso de limpieza, normalización de texto y depuración de caracteres.
+
+- `data/processed/news_scores.csv`  
+  Resultado del análisis de sentimiento por noticia, incluyendo etiquetas y puntajes individuales.
+
+- `data/processed/daily_sentiment.csv`  
+  Indicadores agregados diarios de sentimiento construidos a partir del conjunto de noticias procesadas.
+
+- `data/processed/compare_sentiment_vs_fx.csv`  
+  Comparación entre señales generadas por sentimiento y el comportamiento real del tipo de cambio USD/PEN.
+
+- `data/reports/brief_YYYY-MM-DD.md`  
+  Brief automático diario en formato Markdown con resumen ejecutivo, contexto y principales hallazgos.
+
+## Campos principales
+
+- `date`
+- `source`
+- `title`
+- `url`
+- `text`
+- `language`
+- `topic`
+- `sentiment_label`
+- `sentiment_score`
+- `asset`
+
+
 
 ## 🧠 Arquitectura del Sistema
 
@@ -60,88 +102,53 @@ El objetivo es apoyar decisiones analíticas en Tesorería mediante señales int
 
 ```text
 news-sentiment-pipeline/
-├── .gitignore
-├── LICENSE
-├── README.md
-├── requirements.txt
-├── run_pipeline.py
+├── configs/                         # Archivos de configuración del pipeline
+│   ├── models.yaml                  # Configuración de modelos NLP
+│   ├── pipeline.yaml                # Parámetros generales de ejecución
+│   ├── scoring.yaml                 # Reglas de scoring de sentimiento
+│   ├── signals.yaml                 # Reglas para generación de señales
+│   └── sources.yaml                 # Fuentes RSS / scraping
 │
-├── config/
-│   └── config.yaml
+├── data/                            # Datos generados y procesados por el pipeline
+│   ├── artifacts/                   # Artefactos intermedios del proceso
+│   ├── market/                      # Datos de mercado USD/PEN
+│   ├── processed/                   # Noticias limpias, scores y agregados diarios
+│   ├── raw/                         # Noticias crudas obtenidas de las fuentes
+│   ├── reports/                     # Briefs automáticos generados por fecha
+│   └── db.sqlite                    # Base SQLite local del proyecto
 │
-├── data/
-│   ├── raw/
-│   ├── processed/
-│   └── reports/
+├── faiss_store/                     # Índice vectorial para recuperación semántica
+│   ├── index.faiss                  # Índice FAISS de embeddings
+│   └── meta.jsonl                   # Metadatos asociados a los documentos indexados
 │
-├── docs/
-│   └── sprint1_roadmap.md
+├── figs/                            # Figuras e imágenes usadas en README o reportes
+│   └── arquitectura_pipeline.png    # Imagen de arquitectura del sistema
 │
-├── faiss_store/
-│   ├── index.faiss
-│   └── meta.jsonl
+├── scripts/                         # Scripts auxiliares de análisis y visualización
+│   └── make_eda_plots.py            # Generación de gráficos EDA
 │
-├── figs/
-│   └── arquitectura_pipeline.png
-│
-├── notebooks/
-│   └── eda.ipynb
-│
-├── scripts/
-│   └── make_eda_plots.py
-│
-├── src/
+├── src/                             # Código fuente principal del sistema
 │   ├── __init__.py
-│   ├── pipeline.py
+│   ├── pipeline.py                  # Orquestador principal del pipeline
 │   │
-│   ├── db/
-│   │   └── __init__.py
-│   │
-│   ├── eval/
-│   │   └── __init__.py
-│   │
-│   ├── evaluation/
-│   │   ├── __init__.py
-│   │   └── compare_fx.py
-│   │
-│   ├── ingest/
-│   │   ├── __init__.py
-│   │   ├── rss.py
-│   │   └── scraping.py
-│   │
-│   ├── market/
-│   │   ├── __init__.py
-│   │   └── usdpen_yahoo.py
-│   │
-│   ├── processing/
-│   │   ├── __init__.py
-│   │   ├── cleaning.py
-│   │   ├── language.py
-│   │   ├── ner.py
-│   │   ├── topics.py
-│   │   ├── sentiment.py
-│   │   ├── standardize.py
-│   │   └── aggregate.py
-│   │
-│   ├── rag/
-│   │   ├── __init__.py
-│   │   ├── embeddings.py
-│   │   ├── indexer.py
-│   │   ├── retriever.py
-│   │   └── brief_generator.py
-│   │
-│   ├── signals/
-│   │   ├── __init__.py
-│   │   └── rules.py
-│   │
-│   └── utils/
-│       ├── __init__.py
-│       ├── config.py
-│       ├── hashing.py
-│       └── text.py
+│   ├── db/                          # Módulos de persistencia / base de datos
+│   ├── eval/                        # Módulos iniciales de evaluación
+│   ├── evaluation/                  # Evaluación formal de señales vs USD/PEN
+│   ├── ingest/                      # Ingesta de noticias RSS / scraping
+│   ├── market/                      # Obtención y tratamiento de datos de mercado
+│   ├── processing/                  # Limpieza, idioma, sentimiento, NER y agregación
+│   ├── rag/                         # Embeddings, recuperación y generación de brief
+│   ├── signals/                     # Reglas de generación de señales
+│   └── utils/                       # Funciones auxiliares y utilidades generales
 │
-└── tools/
-    └── export_news_scores.py
+├── tools/                           # Herramientas auxiliares de exportación
+│   └── export_news_scores.py        # Exportación de resultados de sentimiento
+│
+├── .gitignore                       # Archivos/carpetas excluidos de Git
+├── LICENSE                          # Licencia del proyecto
+├── README.md                        # Documentación principal del repositorio
+├── requirements.txt                 # Dependencias necesarias
+└── run_pipeline.py                  # Script principal para ejecutar el pipeline
 ```
 
 ## ▶️ Ejecución
@@ -157,8 +164,30 @@ python run_pipeline.py
 - Brief automático operativo
 - Comparación inicial con USD/PEN
 
-## 🗺️ Roadmap
+## 🗺️Roadmap Sprint 1
 
+## Actividades completadas
+
+| Actividad | Estado | Responsable | Fecha |
+|---|---|---|---|
+| Ingesta de noticias | Completado | Thomy | 2025-12-05 |
+| Limpieza de texto | Completado | Thomy | 2025-12-05 |
+| Detección de idioma | Completado | Thomy | 2025-12-15 |
+| Embeddings + FAISS | Completado | Thomy | 2025-12-15 |
+| NER y tópicos | Completado | Thomy | 2026-01-06 |
+| Análisis de sentimiento | Completado | Thomy | 2026-01-07 |
+| Agregación diaria | Completado | Thomy | 2026-01-08 |
+| Generación de señales | Completado | Thomy | 2026-01-08 |
+| Brief automático RAG | Completado | Thomy | 2026-01-09 |
+| Evaluación inicial vs USD/PEN | Completado | Thomy | 2026-01-09 |
+| Presentación stackholder (Ecosistema de Tipo de cambio) | Pendiente | Nicolleta Lambrushini | 2026-04-28 |
+| Incorporar banda neutral | Pendiente | Thomy | 2026-04-30 |
+| Mejorar calibración de señales | Pendiente | Thomy | 2026-04-30 |
+| Ampliar evaluación histórica | Pendiente | Thomy | 2026-05-05 |
+| Ponderar por fuente y tópico | Pendiente | Thomy | 2026-05-05 |
+| Construir dashboard | Pendiente | Thomy | 2026-05-06 |
+| Generar briefs históricos | Pendiente | Thomy | 2026-05-06 |
+| Presentación 1er MVP | Pendiente | Nicolleta Lambrushini | 2026-05-12 |
 
 ## 👨‍💻 Autor
 
