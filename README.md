@@ -1,24 +1,8 @@
-# \# News Sentiment Pipeline USD/PEN
+# \# 📈 News Sentiment Pipeline USD/PEN
 
 # 
 
-# Pipeline de Inteligencia Artificial orientado al análisis de sentimiento en noticias macroeconómicas formales para generar señales explicables de apoyo a decisiones de tesorería relacionadas con el tipo de cambio USD/PEN.
-
-# 
-
-# \---
-
-# 
-
-# \## Descripción General
-
-# 
-
-# Este proyecto implementa un pipeline reproducible de Procesamiento de Lenguaje Natural (NLP) que procesa noticias económicas en español e inglés, estima sentimiento financiero, agrega indicadores diarios, genera señales interpretables y construye briefs automáticos mediante técnicas de Retrieval-Augmented Generation (RAG).
-
-# 
-
-# El proyecto forma parte de una investigación aplicada enfocada en el uso de Inteligencia Artificial como herramienta de soporte analítico para Tesorería.
+# Sistema basado en Inteligencia Artificial para analizar noticias macroeconómicas formales en español e inglés y generar señales explicables de apoyo a decisiones de Tesorería relacionadas con el tipo de cambio USD/PEN.
 
 # 
 
@@ -26,45 +10,33 @@
 
 # 
 
-# \## Objetivo de Investigación
+# \## 📌 Tabla de Contenido
 
 # 
 
-# Desarrollar un sistema basado en técnicas de Inteligencia Artificial capaz de analizar noticias macroeconómicas formales y generar señales explicables basadas en sentimiento que apoyen la toma de decisiones en Tesorería.
+# 1\. Descripción General  
 
-# 
+# 2\. Objetivos  
 
-# \---
+# 3\. Metodología  
 
-# 
+# 4\. Tecnologías Utilizadas  
 
-# \## Funcionalidades Principales
+# 5\. Arquitectura del Sistema  
 
-# 
+# 6\. Estructura del Proyecto  
 
-# \- Ingesta automática de noticias mediante RSS y scraping.
+# 7\. Instalación  
 
-# \- Limpieza y normalización de texto.
+# 8\. Ejecución  
 
-# \- Detección de idioma (español / inglés).
+# 9\. Resultados Preliminares  
 
-# \- Análisis de sentimiento financiero.
+# 10\. Roadmap  
 
-# \- Reconocimiento de entidades (NER).
+# 11\. Contexto Académico  
 
-# \- Clasificación temática.
-
-# \- Generación de embeddings semánticos.
-
-# \- Recuperación semántica con FAISS.
-
-# \- Agregación diaria de sentimiento.
-
-# \- Generación de señales para USD/PEN.
-
-# \- Brief automático diario mediante RAG.
-
-# \- Evaluación inicial frente al comportamiento real del mercado.
+# 12\. Autor
 
 # 
 
@@ -72,49 +44,189 @@
 
 # 
 
-# \## Estructura del Proyecto
+# \## 📖 Descripción General
+
+# 
+
+# En los mercados financieros, la información macroeconómica influye constantemente en expectativas, liquidez, percepción de riesgo y decisiones operativas.
+
+# 
+
+# Este proyecto propone un pipeline reproducible de Inteligencia Artificial que transforma noticias económicas no estructuradas en indicadores cuantitativos diarios de sentimiento, señales interpretables y briefs automáticos de apoyo analítico.
+
+# 
+
+# El sistema utiliza técnicas modernas de NLP, embeddings semánticos y Retrieval-Augmented Generation (RAG).
+
+# 
+
+# \---
+
+# 
+
+# \## 🎯 Objetivos
+
+# 
+
+# \### Objetivo General
+
+# 
+
+# Desarrollar un sistema basado en IA capaz de analizar noticias macroeconómicas formales y generar señales explicables de apoyo a decisiones en Tesorería.
+
+# 
+
+# \### Objetivos Específicos
+
+# 
+
+# \- Automatizar la recolección de noticias financieras.
+
+# \- Limpiar y normalizar texto en español e inglés.
+
+# \- Aplicar modelos de análisis de sentimiento financiero.
+
+# \- Agregar resultados en indicadores diarios.
+
+# \- Generar señales interpretables para USD/PEN.
+
+# \- Construir briefs automáticos con contexto relevante.
+
+# \- Evaluar resultados frente al comportamiento del mercado.
+
+# 
+
+# \---
+
+# 
+
+# \## 🧠 Metodología
+
+# 
+
+# El proyecto sigue un enfoque iterativo basado en investigación aplicada, integrando prácticas de:
+
+# 
+
+# \- Agile + AI
+
+# \- MLOps académico
+
+# \- NLP financiero
+
+# \- Evaluación incremental
+
+# \- Versionamiento en GitHub
+
+# 
+
+# \### Etapas del pipeline
+
+# 
+
+# 1\. Ingesta de noticias  
+
+# 2\. Limpieza de texto  
+
+# 3\. Detección de idioma  
+
+# 4\. NER y clasificación temática  
+
+# 5\. Análisis de sentimiento  
+
+# 6\. Embeddings semánticos  
+
+# 7\. Agregación diaria  
+
+# 8\. Generación de señales  
+
+# 9\. Brief automático con RAG  
+
+# 10\. Evaluación vs USD/PEN
+
+# 
+
+# \---
+
+# 
+
+# \## ⚙️ Tecnologías Utilizadas
+
+# 
+
+# | Área | Herramienta |
+
+# |------|-------------|
+
+# | Lenguaje principal | Python |
+
+# | NLP | Transformers |
+
+# | Sentimiento EN | FinBERT |
+
+# | Sentimiento ES | RoBERTuito |
+
+# | Embeddings | multilingual-e5-base |
+
+# | Vector Store | FAISS |
+
+# | Datos | Pandas |
+
+# | Visualización | Matplotlib |
+
+# | Versionamiento | Git + GitHub |
+
+# 
+
+# \---
+
+# 
+
+# \## 🏗️ Arquitectura del Sistema
 
 # 
 
 # ```text
 
-# news-sentiment-pipeline/
+# Fuentes de Noticias
 
-# ├── config/
+# &#x20;       ↓
 
-# ├── data/
+# Ingesta RSS / Scraping
 
-# ├── docs/
+# &#x20;       ↓
 
-# ├── notebooks/
+# Limpieza y Normalización
 
-# ├── scripts/
+# &#x20;       ↓
 
-# ├── src/
+# Detección de Idioma
 
-# │   ├── evaluation/
+# &#x20;       ↓
 
-# │   ├── ingest/
+# NER + Topics
 
-# │   ├── market/
+# &#x20;       ↓
 
-# │   ├── processing/
+# Sentimiento
 
-# │   ├── rag/
+# &#x20;       ↓
 
-# │   ├── signals/
+# Embeddings + FAISS
 
-# │   └── utils/
+# &#x20;       ↓
 
-# ├── tools/
+# Agregación Diaria
 
-# ├── run\_pipeline.py
+# &#x20;       ↓
 
-# ├── requirements.txt
+# Señales USD/PEN
 
-# ├── .gitignore
+# &#x20;       ↓
 
-# ├── LICENSE
+# Brief Automático
 
-# └── README.md
+# &#x20;       ↓
+
+# Evaluación
 
