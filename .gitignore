@@ -3,14 +3,6 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 
-data/raw/
-data/processed/
-data/reports/
-outputs/
+
 logs/
 
-*.csv
-*.xlsx
-*.parquet
-*.db
-*.sqlite
