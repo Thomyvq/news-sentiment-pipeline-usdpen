@@ -55,7 +55,92 @@ Este proyecto utiliza noticias macroeconómicas formales en español e inglés p
 
 Las noticias provienen de fuentes económicas formales mediante RSS y scraping.
 
-## Archivos generados localmente
+##  Fuentes utilizadas para la generación del dataset
+
+Las noticias macroeconómicas utilizadas en este proyecto provienen de fuentes públicas, formales y especializadas en economía, finanzas y actualidad internacional.
+
+### 🇵🇪 Fuentes en español
+
+- **RPP Economía**  
+  https://rpp.pe/economia
+
+- **Agencia Andina – Economía**  
+  https://andina.pe/agencia/seccion-economia-2.aspx
+
+- **Bloomberg Línea (Latam / Economía / Mercados)**  
+  https://www.bloomberglinea.com/
+
+- **Gestión – Economía** *(recomendado incorporar)*  
+  https://gestion.pe/economia/
+
+- **El Peruano – Economía** *(recomendado incorporar)*  
+  https://elperuano.pe/
+
+---
+
+###  Fuentes en inglés
+
+- **Reuters Business / Markets**  
+  https://www.reuters.com/business/
+
+- **Reuters Markets**  
+  https://www.reuters.com/markets/
+
+- **Investing.com News** *(recomendado incorporar)*  
+  https://www.investing.com/news/
+
+- **Yahoo Finance News** *(complementario)*  
+  https://finance.yahoo.com/
+
+- **CNBC Markets** *(complementario)*  
+  https://www.cnbc.com/markets/
+
+- **MarketWatch** *(complementario)*  
+  https://www.marketwatch.com/
+
+---
+
+###  Fuentes macroeconómicas institucionales (alto valor)
+
+- **Banco Central de Reserva del Perú (BCRP)**  
+  https://www.bcrp.gob.pe/
+
+- **Federal Reserve (FED)**  
+  https://www.federalreserve.gov/
+
+- **FRED Economic Data**  
+  https://fred.stlouisfed.org/
+
+- **IMF News / Publications**  
+  https://www.imf.org/
+
+- **World Bank News**  
+  https://www.worldbank.org/
+
+---
+
+###  Criterio de selección
+
+Se priorizan fuentes que publiquen información sobre:
+
+- inflación  
+- tasas de interés  
+- crecimiento económico  
+- empleo  
+- commodities  
+- política monetaria  
+- riesgo global  
+- mercados financieros  
+- dólar / divisas  
+- eventos geopolíticos relevantes
+
+---
+
+###  Nota metodológica
+
+El dataset se construye mediante RSS, scraping o ingestión automatizada de titulares y contenido público disponible, respetando límites técnicos y políticas de acceso de cada fuente.
+
+### Archivos generados 
 
 - `data/raw/news_raw.csv`  
   Noticias obtenidas directamente desde las fuentes RSS y scraping, sin procesamiento inicial.
@@ -75,20 +160,39 @@ Las noticias provienen de fuentes económicas formales mediante RSS y scraping.
 - `data/reports/brief_YYYY-MM-DD.md`  
   Brief automático diario en formato Markdown con resumen ejecutivo, contexto y principales hallazgos.
 
-## Campos principales
+###  Campos principales
 
-- `date`
-- `source`
-- `title`
-- `url`
-- `text`
-- `language`
-- `topic`
-- `sentiment_label`
-- `sentiment_score`
-- `asset`
+- `date`  
+  Fecha de publicación de la noticia o fecha en la que fue registrada por el pipeline.
 
+- `source`  
+  Medio, portal o institución desde donde se obtuvo la noticia.
 
+- `title`  
+  Titular principal de la noticia utilizado como resumen inicial del contenido.
+
+- `url`  
+  Enlace web original de la noticia para trazabilidad y validación de la fuente.
+
+- `text`  
+  Contenido textual procesado de la noticia (cuerpo, resumen o texto consolidado).
+
+- `language`  
+  Idioma detectado automáticamente para enrutar el modelo NLP adecuado (ES / EN).
+
+- `topic`  
+  Clasificación temática estimada de la noticia (inflación, tasas, FX, crecimiento, riesgo, etc.).
+
+- `sentiment_label`  
+  Etiqueta categórica del sentimiento asignado por el modelo (`positive`, `neutral`, `negative`).
+
+- `sentiment_score`  
+  Puntaje numérico de sentimiento utilizado para agregación diaria y generación de señales.
+
+- `asset`  
+  Activo financiero asociado al análisis, principalmente el tipo de cambio `USD/PEN`.
+
+---
 
 ## 🧠 Arquitectura del Sistema
 
