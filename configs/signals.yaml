@@ -1,0 +1,6 @@
+daily:
+  asset: "USD/PEN"
+  metric: "sent_index_mean"   # o sent_index_strength (ver aggregate)
+  threshold_pos: 0.15
+  threshold_neg: -0.15
+  min_news: 15

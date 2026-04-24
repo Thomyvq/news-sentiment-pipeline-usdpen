@@ -1,0 +1,18 @@
+timezone: America/Lima
+
+min_chars: 250
+max_chars: 20000
+
+language:
+  allowed: ["es", "en"]
+  min_conf: 0.85
+
+storage:
+  sqlite_path: "data/artifacts/pipeline.db"
+  faiss_dir: "faiss_store"
+
+scraping:
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
+  timeout_sec: 15
+  sleep_sec: 2.0
+  max_items_per_source: 30

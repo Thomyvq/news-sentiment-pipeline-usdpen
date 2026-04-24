@@ -1,0 +1,19 @@
+# Core
+pyyaml
+requests
+beautifulsoup4
+feedparser
+pandas
+numpy
+tqdm
+langdetect
+regex
+python-dateutil
+
+# NLP / ML
+torch
+transformers
+sentence-transformers
+
+# Vector store
+faiss-cpu

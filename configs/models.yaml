@@ -1,0 +1,30 @@
+sentiment:
+  en:
+    hf_model: "ProsusAI/finbert"
+  es:
+    hf_model: "pysentimiento/robertuito-sentiment-analysis"
+
+embeddings:
+  hf_model: "intfloat/multilingual-e5-base"
+  prefix_query: "query: "
+  prefix_passage: "passage: "
+
+ner:
+  en:
+    hf_model: "dslim/bert-base-NER"
+  es:
+    hf_model: "mrm8488/bert-spanish-cased-finetuned-ner"
+
+topics:
+  enabled: true
+  hf_model: "joeddav/xlm-roberta-large-xnli"
+  labels:
+    - inflation
+    - interest rates
+    - employment
+    - economic growth
+    - foreign exchange
+    - commodities
+    - geopolitics
+    - politics
+    - risk sentiment

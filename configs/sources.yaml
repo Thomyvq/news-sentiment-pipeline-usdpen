@@ -1,0 +1,62 @@
+sources:
+  # RSS (core)
+  - name: "Yahoo Finance – Markets"
+    type: "rss"
+    url: "https://finance.yahoo.com/rss/"
+    reliability_weight: 1.4
+    lang_hint: "en"
+
+  - name: "Yahoo Finance – Forex"
+    type: "rss"
+    url: "https://finance.yahoo.com/rss/forex"
+    reliability_weight: 1.5
+    lang_hint: "en"
+
+  - name: "Financial Times – Global Economy"
+    type: "rss"
+    url: "https://www.ft.com/global-economy?format=rss"
+    reliability_weight: 1.3
+    lang_hint: "en"
+
+  - name: "CNBC – Economy"
+    type: "rss"
+    url: "https://www.cnbc.com/id/20910258/device/rss/rss.html"
+    reliability_weight: 1.2
+    lang_hint: "en"
+
+  - name: "MarketWatch – Economy"
+    type: "rss"
+    url: "https://feeds.marketwatch.com/marketwatch/economy/"
+    reliability_weight: 1.2
+    lang_hint: "en"
+
+  - name: "Gestión (Perú)"
+    type: "rss"
+    url: "https://gestion.pe/arc/outboundfeeds/rss/?outputType=xml"
+    reliability_weight: 1.4
+    lang_hint: "es"
+
+  - name: "El Comercio (Perú)"
+    type: "rss"
+    url: "https://elcomercio.pe/arc/outboundfeeds/rss/?outputType=xml"
+    reliability_weight: 1.2
+    lang_hint: "es"
+
+  - name: "América Economía"
+    type: "rss"
+    url: "https://www.americaeconomia.com/rss.xml"
+    reliability_weight: 1.1
+    lang_hint: "es"
+
+  # Scraping (secundario)
+  - name: "Reuters Business (Scraping)"
+    type: "scrape_reuters_business"
+    url: "https://www.reuters.com/business/"
+    reliability_weight: 1.5
+    lang_hint: "en"
+
+  - name: "Bloomberg Línea – Noticias del día (Scraping)"
+    type: "scrape_bloomberglinea_tag"
+    url: "https://www.bloomberglinea.com/tags/las-noticias-del-dia/"
+    reliability_weight: 1.3
+    lang_hint: "es"
