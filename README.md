@@ -1,4 +1,4 @@
-# 📈 Análisis de Sentimiento en Noticias Macroeconómicas Formales para la Generación de Señales de Apoyo a la Toma de Decisiones en Tesorería mediante Técnicas de Inteligencia Artificial
+# 📈 Análisis de sentimiento en noticias macroeconómicas formales para la generación de señales de apoyo a la toma de decisiones en Tesorería mediante técnicas de Inteligencia Artificial
 
 ![Status](https://img.shields.io/badge/Status-Active-success)
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
