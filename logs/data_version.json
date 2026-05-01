@@ -1,0 +1,31 @@
+{
+  "execution_time": "2026-05-01 15:00:03",
+  "start_date": "2025-12-01",
+  "end_date": "2026-01-10 ",
+  "news_scores_exists": true,
+  "news_scores_shape": [
+    252,
+    7
+  ],
+  "daily_sentiment_shape_original": [
+    17,
+    8
+  ],
+  "daily_sentiment_shape_filtered": [
+    12,
+    8
+  ],
+  "baseline_shape": [
+    10,
+    7
+  ],
+  "sentiment_column_used": "sent_index_mean",
+  "date_column_used": "date",
+  "volume_column_used": "n_news_total",
+  "features": [
+    "lag_sent",
+    "lag_sent_2",
+    "volatility_3",
+    "news_volume"
+  ]
+}
