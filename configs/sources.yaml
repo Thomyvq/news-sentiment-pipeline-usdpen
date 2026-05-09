@@ -60,3 +60,10 @@ sources:
     url: "https://www.bloomberglinea.com/tags/las-noticias-del-dia/"
     reliability_weight: 1.3
     lang_hint: "es"
+
+  - name: "GDELT Peru Macro FX"
+    type: "gdelt_daily"
+    url: "gdelt"
+    reliability_weight: 1.5
+    lang_hint: "en"
+    query: '(Peru OR "Peruvian sol" OR "USD PEN" OR BCRP OR "exchange rate Peru" OR "Peru inflation" OR "FED rates" OR "Peru economy")'

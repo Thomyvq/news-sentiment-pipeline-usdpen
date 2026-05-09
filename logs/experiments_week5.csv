@@ -1,0 +1,5 @@
+experiment,features,accuracy,f1_weighted,f1_binary,elapsed_seconds,n_features,n_train,n_test
+Baseline_lag1,lag_sent_1,0.4444444444444444,0.43584451324389406,0.47368421052631576,0.00917196273803711,1,84,36
+Var1_lag1_lag2,"lag_sent_1, lag_sent_2",0.3888888888888889,0.3888888888888889,0.3888888888888889,0.01202535629272461,2,84,36
+Var2_lags_volume_shares,"lag_sent_1, lag_sent_2, n_news_total, share_pos, share_neg, share_neu",0.6666666666666666,0.6708333333333333,0.625,0.008070230484008789,6,84,36
+Var3_full_temporal,"lag_sent_1, lag_sent_2, rolling_sent_3, volatility_sent_3, n_news_total, share_pos, share_neg, share_neu",0.6944444444444444,0.698005698005698,0.6666666666666666,0.00865793228149414,8,84,36
