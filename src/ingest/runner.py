@@ -6,23 +6,38 @@ import pandas as pd
 from ..utils.hashing import sha256_text
 from ..utils.text import strip_html, normalize_text
 from .rss import fetch_rss
-from .scrapers import scrape_reuters_business, scrape_bloomberglinea_tag
+from .scrapers import (
+    scrape_reuters_business,
+    scrape_bloomberglinea_tag,
+    scrape_gdelt_news_by_day,
+)
 
 
 def run_ingestion(db, sources_cfg, pipeline_cfg, start_date=None, end_date=None) -> pd.DataFrame:
     """
-    Ejecuta la ingesta de noticias desde las fuentes configuradas y:
-    - Inserta (upsert) cada noticia en DB (tabla: raw_news)
-    - Retorna un DataFrame con las filas procesadas en esta ejecución
+    Ejecuta la ingesta de noticias desde las fuentes configuradas.
 
-    start_date/end_date se dejan como parámetros opcionales para compatibilidad
-    con pipelines que los pasan, aunque aquí no se filtra por fecha (depende de cada fuente).
+    Soporta:
+    - RSS
+    - Scraping Reuters
+    - Scraping Bloomberg Línea
+    - GDELT histórico diario
+
+    Retorna un DataFrame con las noticias recolectadas en la ejecución.
     """
+
     scfg = pipeline_cfg["scraping"]
     ua = scfg["user_agent"]
     timeout = int(scfg["timeout_sec"])
     sleep_sec = float(scfg["sleep_sec"])
     max_items = int(scfg["max_items_per_source"])
+
+    # Fechas por defecto desde config
+    if start_date is None:
+        start_date = pipeline_cfg.get("date_range", {}).get("start", "2026-01-01")
+
+    if end_date is None:
+        end_date = pipeline_cfg.get("date_range", {}).get("end", "2026-05-08")
 
     rows = []
 
@@ -30,20 +45,59 @@ def run_ingestion(db, sources_cfg, pipeline_cfg, start_date=None, end_date=None)
         stype = src.get("type")
         url = src.get("url")
 
-        if not stype or not url:
+        if not stype:
             continue
+
+        print(f"▶ Fuente: {src.get('name', stype)} [{stype}]")
 
         try:
             if stype == "rss":
+                if not url:
+                    continue
                 items = fetch_rss(url)
+
             elif stype == "scrape_reuters_business":
-                items = scrape_reuters_business(url, ua, timeout, sleep_sec, max_items)
+                if not url:
+                    continue
+                items = scrape_reuters_business(
+                    url,
+                    ua,
+                    timeout,
+                    sleep_sec,
+                    max_items
+                )
+
             elif stype == "scrape_bloomberglinea_tag":
-                items = scrape_bloomberglinea_tag(url, ua, timeout, sleep_sec, max_items)
+                if not url:
+                    continue
+                items = scrape_bloomberglinea_tag(
+                    url,
+                    ua,
+                    timeout,
+                    sleep_sec,
+                    max_items
+                )
+
+            elif stype == "gdelt_daily":
+                query = src.get(
+                    "query",
+                    '(Peru OR "Peruvian sol" OR "USD PEN" OR BCRP OR "exchange rate Peru" OR "Peru inflation")'
+                )
+
+                items = scrape_gdelt_news_by_day(
+                    query=query,
+                    start_date=start_date,
+                    end_date=end_date,
+                    max_records_per_day=max_items,
+                    sleep_sec=sleep_sec,
+                )
+
             else:
+                print(f"⚠ Fuente ignorada. Tipo no soportado: {stype}")
                 continue
-        except Exception:
-            # Si una fuente falla, continúa con la siguiente
+
+        except Exception as e:
+            print(f"⚠ Error en fuente {src.get('name', stype)}: {e}")
             continue
 
         for it in items or []:
@@ -52,11 +106,18 @@ def run_ingestion(db, sources_cfg, pipeline_cfg, start_date=None, end_date=None)
 
             title = normalize_text(strip_html(it.get("title", "")))
             body = normalize_text(strip_html(it.get("summary", "")))
+
+            if not title and not body:
+                continue
+
             content_hash = sha256_text(title + "||" + body)
 
+            # ID estable para evitar duplicados entre ejecuciones
+            news_id = sha256_text(it["url"])[:32]
+
             row = {
-                "news_id": str(uuid.uuid4()),
-                "source": src.get("name", ""),
+                "news_id": news_id,
+                "source": it.get("source") or src.get("name", ""),
                 "url": it["url"],
                 "published_at": it.get("published_at", "") or "",
                 "fetched_at": it.get("fetched_at", "") or "",
@@ -67,19 +128,27 @@ def run_ingestion(db, sources_cfg, pipeline_cfg, start_date=None, end_date=None)
                 "reliability_weight": float(src.get("reliability_weight", 1.0)),
             }
 
-            # Insert / upsert a DB (según tu implementación interna)
             try:
                 db.upsert("raw_news", row, key="news_id")
             except Exception:
-                # No tumbes el pipeline por un insert fallido
                 pass
 
             rows.append(row)
 
     df_raw = pd.DataFrame(rows)
+
+    if not df_raw.empty:
+        df_raw = df_raw.drop_duplicates(subset=["url"])
+        df_raw = df_raw.drop_duplicates(subset=["content_hash"])
+
     return df_raw
 
 
-# --- Compatibilidad: si en tu código antiguo llamabas run_ingest(...) ---
-def run_ingest(db, sources_cfg, pipeline_cfg):
-    return run_ingestion(db, sources_cfg, pipeline_cfg)
+def run_ingest(db, sources_cfg, pipeline_cfg, start_date=None, end_date=None):
+    return run_ingestion(
+        db,
+        sources_cfg,
+        pipeline_cfg,
+        start_date=start_date,
+        end_date=end_date,
+    )

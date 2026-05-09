@@ -1,31 +1,19 @@
-EDA + Baseline mínimo - News Sentiment Pipeline USD/PEN
-Fecha de ejecución: 2026-05-01 15:00:03
-START_DATE: 2025-12-01
-END_DATE: 2026-01-10 
+Métricas de Baseline y Experimentos A/B
+Fecha ejecución: 2026-05-08T19:30:30.812962
+START_DATE: 2025-07-01
+END_DATE: 2026-05-08
 RANDOM_SEED: 42
-TEST_SIZE_RATIO: 0.3
-Filas daily filtrado: 12
-Filas baseline: 10
-Fecha mínima filtrada: 2025-12-07 00:00:00
-Fecha máxima filtrada: 2026-01-09 00:00:00
+Split temporal: train=84, test=36
 
-Métricas:
-              model  accuracy  f1_weighted  f1_macro
-Dummy most_frequent  0.666667     0.533333      0.40
-Logistic Regression  0.333333     0.333333      0.25
+Baselines iniciales:
+              model  accuracy  f1_weighted  f1_binary  n_test  elapsed_seconds
+Dummy most_frequent  0.388889     0.217778   0.560000      36         0.003015
+     Rule sentiment  1.000000     1.000000   1.000000      36         0.000995
+  Logistic baseline  0.444444     0.435845   0.473684      36         0.019534
 
-Mejor modelo: Dummy most_frequent
-
-Classification report:
-              precision    recall  f1-score   support
-
-           0       0.00      0.00      0.00         1
-           1       0.67      1.00      0.80         2
-
-    accuracy                           0.67         3
-   macro avg       0.33      0.50      0.40         3
-weighted avg       0.44      0.67      0.53         3
-
-Confusion matrix:
-[[0 1]
- [0 2]]
+Experimentos Semana 5:
+             experiment                                                                                                 features  accuracy  f1_weighted  f1_binary  elapsed_seconds  n_features  n_train  n_test
+          Baseline_lag1                                                                                               lag_sent_1  0.444444     0.435845   0.473684         0.009172           1       84      36
+         Var1_lag1_lag2                                                                                   lag_sent_1, lag_sent_2  0.388889     0.388889   0.388889         0.012025           2       84      36
+Var2_lags_volume_shares                                    lag_sent_1, lag_sent_2, n_news_total, share_pos, share_neg, share_neu  0.666667     0.670833   0.625000         0.008070           6       84      36
+     Var3_full_temporal lag_sent_1, lag_sent_2, rolling_sent_3, volatility_sent_3, n_news_total, share_pos, share_neg, share_neu  0.694444     0.698006   0.666667         0.008658           8       84      36

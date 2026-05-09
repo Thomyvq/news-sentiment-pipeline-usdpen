@@ -1,31 +1,80 @@
 {
-  "execution_time": "2026-05-01 15:00:03",
-  "start_date": "2025-12-01",
-  "end_date": "2026-01-10 ",
-  "news_scores_exists": true,
-  "news_scores_shape": [
-    252,
-    7
-  ],
-  "daily_sentiment_shape_original": [
-    17,
-    8
-  ],
-  "daily_sentiment_shape_filtered": [
-    12,
-    8
-  ],
-  "baseline_shape": [
-    10,
-    7
-  ],
-  "sentiment_column_used": "sent_index_mean",
-  "date_column_used": "date",
-  "volume_column_used": "n_news_total",
-  "features": [
-    "lag_sent",
-    "lag_sent_2",
-    "volatility_3",
-    "news_volume"
-  ]
+  "generated_at": "2026-05-08T19:26:53.989450",
+  "files": {
+    "news_clean": {
+      "rows": 2906,
+      "columns": 10,
+      "column_names": [
+        "news_id",
+        "source",
+        "url",
+        "published_at",
+        "fetched_at",
+        "title_raw",
+        "body_raw",
+        "content_hash",
+        "lang_hint",
+        "reliability_weight"
+      ]
+    },
+    "news_scores": {
+      "rows": 2849,
+      "columns": 7,
+      "column_names": [
+        "news_id",
+        "sentiment_model",
+        "sentiment_label",
+        "p_pos",
+        "p_neu",
+        "p_neg",
+        "language"
+      ]
+    },
+    "daily_sentiment": {
+      "rows": 122,
+      "columns": 8,
+      "column_names": [
+        "date",
+        "asset",
+        "n_news_total",
+        "sent_index_mean",
+        "sent_index_strength",
+        "share_pos",
+        "share_neg",
+        "share_neu"
+      ]
+    },
+    "compare_fx": {
+      "rows": 90,
+      "columns": 13,
+      "column_names": [
+        "date",
+        "asset",
+        "n_news_total",
+        "sent_index_mean",
+        "sent_index_strength",
+        "share_pos",
+        "share_neg",
+        "share_neu",
+        "open",
+        "close",
+        "signal",
+        "real_dir",
+        "hit"
+      ]
+    },
+    "fx_local": {
+      "rows": 223,
+      "columns": 7,
+      "column_names": [
+        "date",
+        "Adj Close",
+        "close",
+        "high",
+        "low",
+        "open",
+        "volume"
+      ]
+    }
+  }
 }

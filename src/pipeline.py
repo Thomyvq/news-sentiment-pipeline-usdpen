@@ -26,7 +26,7 @@ from pathlib import Path
 import pandas as pd
 
 
-def run_all():
+def run_all(start_date=None, end_date=None): #def run_all():
     # Cargar configuraciones
     cfg = load_configs()
 
@@ -38,7 +38,15 @@ def run_all():
     #run_ingest(db, cfg["sources"], cfg["pipeline"])
 
     print("▶ Ingesta de noticias")
-    df_raw = run_ingest(db, cfg["sources"], cfg["pipeline"])  # <- importante: capturar retorno
+    #df_raw = run_ingest(db, cfg["sources"], cfg["pipeline"])  # <- importante: capturar retorno
+
+    df_raw = run_ingest(
+    db,
+    cfg["sources"],
+    cfg["pipeline"],
+    start_date=start_date,
+    end_date=end_date,
+    )
 
     # Crear carpeta y guardar SIEMPRE a CSV
     Path("data/raw").mkdir(parents=True, exist_ok=True)
@@ -86,10 +94,54 @@ def run_all():
     run_aggregate_daily(db, asset=asset)
 
     
+
+    #####
+    cfg_start = cfg["pipeline"].get("date_range", {}).get("start", "2025-07-01")
+    cfg_end = cfg["pipeline"].get("date_range", {}).get("end", "2026-04-30")
+
+    start_date = start_date or cfg_start
+    end_date = end_date or cfg_end
+
+    cfg["pipeline"]["date_range"] = {
+        "start": start_date,
+        "end": end_date
+    }
+
+    print(f"📅 Rango usado por el pipeline: {start_date} → {end_date}")
+
+    #####
+
     export_daily_sentiment(db)
 
-    start_date = cfg["pipeline"]["date_range"]["start"] if "date_range" in cfg["pipeline"] else "2025-12-01"
-    end_date = cfg["pipeline"]["date_range"]["end"] if "date_range" in cfg["pipeline"] else "2026-01-09"
+##############################
+
+    # Filtrar daily_sentiment.csv al rango solicitado
+    daily_path = Path("data/processed/daily_sentiment.csv")
+
+    if daily_path.exists():
+        df_daily = pd.read_csv(daily_path)
+        df_daily["date"] = pd.to_datetime(df_daily["date"], errors="coerce")
+
+        df_daily = df_daily[
+            (df_daily["date"] >= pd.to_datetime(start_date)) &
+            (df_daily["date"] <= pd.to_datetime(end_date))
+        ]
+
+        df_daily["date"] = df_daily["date"].dt.strftime("%Y-%m-%d")
+        df_daily.to_csv(daily_path, index=False, encoding="utf-8-sig")
+
+        print(
+            f"✔ daily_sentiment filtrado por rango: "
+            f"{start_date} → {end_date} ({len(df_daily)} filas)"
+        )
+
+##############################        
+
+    #start_date = cfg["pipeline"]["date_range"]["start"] if "date_range" in cfg["pipeline"] else "2025-07-01"# "2025-12-01"
+    #end_date = cfg["pipeline"]["date_range"]["end"] if "date_range" in cfg["pipeline"] else "2026-04-30"# "2026-01-09"
+
+
+
 
     fx_df = fetch_usdpen_yahoo(start_date, end_date)
     #sent_df = export_sentiment_timeseries(db)
