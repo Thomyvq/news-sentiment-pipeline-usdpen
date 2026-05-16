@@ -1,0 +1,5 @@
+model,features,accuracy,f1_binary,pr_auc,elapsed_seconds,decision,note
+Baseline_lag1,lag_sent_1,0.48148148148148145,0.5625,0.7771425808378964,0.004997968673706055,Adoptar,Baseline con sentimiento rezagado 1 día
+Var1_lag1_lag2,"lag_sent_1, lag_sent_2",0.48148148148148145,0.5333333333333333,0.785881862150893,0.004006385803222656,Descartar,Agrega sentimiento rezagado 2 días
+Var2_lags_volume_shares,"lag_sent_1, lag_sent_2, n_news_total, share_pos, share_neg, share_neu",0.4074074074074074,0.5,0.7456847761047696,0.004999637603759766,Descartar,Agrega volumen y composición del sentimiento
+Var3_full_temporal,"lag_sent_1, lag_sent_2, rolling_sent_3, volatility_sent_3, n_news_total, share_pos, share_neg, share_neu",0.4444444444444444,0.5454545454545454,0.7412783638036204,0.005162239074707031,Descartar,Agrega rolling y volatilidad temporal

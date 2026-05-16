@@ -1,0 +1,95 @@
+{
+  "generated_at": "2026-05-15T18:57:20.957783",
+  "start_date": "2025-07-01",
+  "end_date": "2026-05-08",
+  "random_seed": 42,
+  "files": {
+    "news_clean": {
+      "rows": 2906,
+      "columns": 10,
+      "column_names": [
+        "news_id",
+        "source",
+        "url",
+        "published_at",
+        "fetched_at",
+        "title_raw",
+        "body_raw",
+        "content_hash",
+        "lang_hint",
+        "reliability_weight"
+      ]
+    },
+    "news_scores": {
+      "rows": 2849,
+      "columns": 7,
+      "column_names": [
+        "news_id",
+        "sentiment_model",
+        "sentiment_label",
+        "p_pos",
+        "p_neu",
+        "p_neg",
+        "language"
+      ]
+    },
+    "daily_sentiment": {
+      "rows": 122,
+      "columns": 8,
+      "column_names": [
+        "date",
+        "asset",
+        "n_news_total",
+        "sent_index_mean",
+        "sent_index_strength",
+        "share_pos",
+        "share_neg",
+        "share_neu"
+      ]
+    },
+    "compare_fx": {
+      "rows": 90,
+      "columns": 13,
+      "column_names": [
+        "date",
+        "asset",
+        "n_news_total",
+        "sent_index_mean",
+        "sent_index_strength",
+        "share_pos",
+        "share_neg",
+        "share_neu",
+        "open",
+        "close",
+        "signal",
+        "real_dir",
+        "hit"
+      ]
+    },
+    "daily_eval": {
+      "rows": 90,
+      "columns": 6,
+      "column_names": [
+        "Fecha",
+        "Señal Sentimiento",
+        "Apertura",
+        "Cierre",
+        "Movimiento Real",
+        "Coincide"
+      ]
+    },
+    "usdpen": {
+      "rows": 223,
+      "columns": 7,
+      "column_names": [
+        "date",
+        "Adj Close",
+        "close",
+        "high",
+        "low",
+        "open",
+        "volume"
+      ]
+    }
+  }
+}
