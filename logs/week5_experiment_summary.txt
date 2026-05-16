@@ -1,0 +1,62 @@
+Métricas y experimentos Semana 5
+============================================================
+
+Fecha ejecución: 2026-05-15T18:58:35.258542
+START_DATE: 2025-07-01
+END_DATE: 2026-05-08
+RANDOM_SEED: 42
+PROJECT_ROOT: C:\Users\Thomy\Cursos\Proyecto_1\Proyecto_Tesis_1\news-sentiment-pipeline
+
+Split temporal holdout:
+Train: 2025-07-09 00:00:00 → 2026-03-05 00:00:00 | filas=61
+Test : 2026-03-06 00:00:00 → 2026-05-08 00:00:00 | filas=27
+
+Distribución target train:
+target_up
+0    39
+1    22
+
+Distribución target test:
+target_up
+1    19
+0     8
+
+Baselines iniciales:
+              model  accuracy  f1_weighted  f1_binary  precision   recall   pr_auc  elapsed_seconds  n_train  n_test  n_features
+Dummy most_frequent  0.296296     0.135450     0.0000   0.000000 0.000000 0.703704         0.001169       61      27           1
+     Rule sentiment  0.666667     0.562963     0.8000   0.692308 0.947368 0.668561         0.000000       61      27           1
+  Logistic baseline  0.481481     0.503577     0.5625   0.692308 0.473684 0.777143         0.004002       61      27           1
+
+Experimentos A/B:
+                  model                                                                                                 features  accuracy  f1_weighted  f1_binary  precision   recall   pr_auc  elapsed_seconds  n_features  n_train  n_test                                         note
+          Baseline_lag1                                                                                               lag_sent_1  0.481481     0.503577   0.562500   0.692308 0.473684 0.777143         0.004998           1       61      27      Baseline con sentimiento rezagado 1 día
+         Var1_lag1_lag2                                                                                   lag_sent_1, lag_sent_2  0.481481     0.498765   0.533333   0.727273 0.421053 0.785882         0.004006           2       61      27           Agrega sentimiento rezagado 2 días
+Var2_lags_volume_shares                                    lag_sent_1, lag_sent_2, n_news_total, share_pos, share_neg, share_neu  0.407407     0.432660   0.500000   0.615385 0.421053 0.745685         0.005000           6       61      27 Agrega volumen y composición del sentimiento
+     Var3_full_temporal lag_sent_1, lag_sent_2, rolling_sent_3, volatility_sent_3, n_news_total, share_pos, share_neg, share_neu  0.444444     0.468494   0.545455   0.642857 0.473684 0.741278         0.005162           8       61      27        Agrega rolling y volatilidad temporal
+
+Validación TimeSeriesSplit:
+             experiment  accuracy_mean  accuracy_std  f1_binary_mean  f1_binary_std  f1_weighted_mean  f1_weighted_std  precision_mean  recall_mean  pr_auc_mean  pr_auc_std  elapsed_mean  folds_validos
+          Baseline_lag1        0.47619      0.109109        0.542974       0.077656          0.500629         0.086471        0.726984     0.439731     0.821263    0.076635      0.003787              3
+         Var1_lag1_lag2        0.50000      0.123718        0.555672       0.078402          0.523141         0.099503        0.766667     0.436027     0.800810    0.080237      0.003404              3
+Var2_lags_volume_shares        0.47619      0.148690        0.577342       0.119150          0.503755         0.127453        0.680556     0.510101     0.775871    0.038524      0.003861              3
+     Var3_full_temporal        0.50000      0.123718        0.605664       0.086791          0.527307         0.105796        0.696429     0.540404     0.764244    0.063066      0.004032              3
+
+Calibración de umbral:
+        model  threshold  accuracy  f1_binary  f1_weighted  precision_binary  recall_binary
+Baseline_lag1       0.30  0.740741   0.837209     0.696891          0.750000       0.947368
+Baseline_lag1       0.35  0.740741   0.837209     0.696891          0.750000       0.947368
+Baseline_lag1       0.40  0.703704   0.809524     0.668430          0.739130       0.894737
+Baseline_lag1       0.45  0.592593   0.702703     0.599070          0.722222       0.684211
+Baseline_lag1       0.50  0.481481   0.562500     0.503577          0.692308       0.473684
+Baseline_lag1       0.55  0.407407   0.333333     0.372840          0.800000       0.210526
+Baseline_lag1       0.60  0.333333   0.100000     0.209804          1.000000       0.052632
+Baseline_lag1       0.65  0.333333   0.100000     0.209804          1.000000       0.052632
+Baseline_lag1       0.70  0.333333   0.100000     0.209804          1.000000       0.052632
+
+Decisión experimental:
+             experiment                                                                                                 features  accuracy  f1_binary   pr_auc  elapsed_seconds  delta_accuracy_vs_baseline  delta_f1_vs_baseline  delta_pr_auc_vs_baseline   decision                                             reason
+          Baseline_lag1                                                                                               lag_sent_1  0.481481   0.562500 0.777143         0.004998                    0.000000              0.000000                  0.000000 Referencia                           Baseline de comparación.
+         Var1_lag1_lag2                                                                                   lag_sent_1, lag_sent_2  0.481481   0.533333 0.785882         0.004006                    0.000000             -0.029167                  0.008739  Descartar No mejora la métrica principal frente al baseline.
+Var2_lags_volume_shares                                    lag_sent_1, lag_sent_2, n_news_total, share_pos, share_neg, share_neu  0.407407   0.500000 0.745685         0.005000                   -0.074074             -0.062500                 -0.031458  Descartar No mejora la métrica principal frente al baseline.
+     Var3_full_temporal lag_sent_1, lag_sent_2, rolling_sent_3, volatility_sent_3, n_news_total, share_pos, share_neg, share_neu  0.444444   0.545455 0.741278         0.005162                   -0.037037             -0.017045                 -0.035864  Descartar No mejora la métrica principal frente al baseline.
+
