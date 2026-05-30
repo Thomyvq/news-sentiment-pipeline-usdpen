@@ -1,0 +1,5 @@
+﻿riesgo,impacto,accion
+Desbalance temporal del target,El modelo puede favorecer la clase mayoritaria.,Ampliar histórico y usar PR-AUC/F1 como métricas centrales.
+Drift macroeconómico,La relación sentimiento-USD/PEN puede cambiar en el tiempo.,Monitorear desempeño por ventanas temporales.
+Predominio de sentimiento neutral,Puede reducir sensibilidad a eventos extremos.,Incorporar fuentes más específicas de mercado y macro.
+Cobertura incompleta de scraping/RSS,Puede generar huecos temporales.,Agregar fuentes históricas adicionales y validación de cobertura.

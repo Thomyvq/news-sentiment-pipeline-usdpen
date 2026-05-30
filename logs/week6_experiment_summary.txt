@@ -1,0 +1,38 @@
+Entrega Sprint Semana 6
+============================================================
+
+Contexto:
+Proyecto de análisis de sentimiento en noticias macroeconómicas para generar señales sobre USD/PEN.
+
+Métrica central:
+PR-AUC, debido al desbalance del target UP/DOWN.
+
+Split temporal:
+Train: 2025-07-09 00:00:00 -> 2026-03-05 00:00:00 | filas=61
+Test : 2026-03-06 00:00:00 -> 2026-05-08 00:00:00 | filas=27
+
+Resultados comparables:
+            experimento                                                                                                 features  accuracy  f1_principal  precision   recall  pr_auc_metrica_central  latencia_segundos                             cambio_realizado
+          Baseline_lag1                                                                                               lag_sent_1  0.481481      0.562500   0.692308 0.473684                0.777143           0.004998      Baseline con sentimiento rezagado 1 día
+         Var1_lag1_lag2                                                                                   lag_sent_1, lag_sent_2  0.481481      0.533333   0.727273 0.421053                0.785882           0.004006           Agrega sentimiento rezagado 2 días
+Var2_lags_volume_shares                                    lag_sent_1, lag_sent_2, n_news_total, share_pos, share_neg, share_neu  0.407407      0.500000   0.615385 0.421053                0.745685           0.005000 Agrega volumen y composición del sentimiento
+     Var3_full_temporal lag_sent_1, lag_sent_2, rolling_sent_3, volatility_sent_3, n_news_total, share_pos, share_neg, share_neu  0.444444      0.545455   0.642857 0.473684                0.741278           0.005162        Agrega rolling y volatilidad temporal
+
+Decisión experimental:
+            experimento  delta_pr_auc_vs_baseline  delta_f1_vs_baseline  latencia_segundos   decision                                    justificacion
+          Baseline_lag1                  0.000000              0.000000           0.004998 Referencia         Modelo base para comparar las variantes.
+         Var1_lag1_lag2                  0.008739             -0.029167           0.004006    Evaluar    Mejora PR-AUC, pero revisar F1 y estabilidad.
+Var2_lags_volume_shares                 -0.031458             -0.062500           0.005000  Descartar No mejora la métrica central frente al baseline.
+     Var3_full_temporal                 -0.035864             -0.017045           0.005162  Descartar No mejora la métrica central frente al baseline.
+
+Mejor variante:
+Var1_lag1_lag2
+PR-AUC: 0.7859
+F1: 0.5333
+
+Riesgos y próximos pasos:
+                              riesgo                                                     impacto                                                            accion
+      Desbalance temporal del target             El modelo puede favorecer la clase mayoritaria.       Ampliar histórico y usar PR-AUC/F1 como métricas centrales.
+                Drift macroeconómico La relación sentimiento-USD/PEN puede cambiar en el tiempo.                     Monitorear desempeño por ventanas temporales.
+   Predominio de sentimiento neutral              Puede reducir sensibilidad a eventos extremos.            Incorporar fuentes más específicas de mercado y macro.
+Cobertura incompleta de scraping/RSS                            Puede generar huecos temporales. Agregar fuentes históricas adicionales y validación de cobertura.
