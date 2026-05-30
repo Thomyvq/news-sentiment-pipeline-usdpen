@@ -1,0 +1,8 @@
+﻿criterio,estado,evidencia
+Split correcto,Cumplido,"Se usa split temporal: train pasado, test futuro."
+Fit solo en train,Cumplido,StandardScaler y LogisticRegression están dentro de Pipeline y se ajustan solo con X_train.
+Seeds fijadas,Cumplido,RANDOM_SEED = 42.
+Mismo protocolo,Cumplido,"Todas las variantes usan el mismo dataset, mismo split temporal y mismas métricas."
+Sin cambios de data entre baseline y evaluación,Cumplido,Baseline y variantes usan train_df/test_df ya definidos.
+Logs completos,Cumplido,"Se exportan métricas, CV, decisiones, riesgos y resumen en logs/."
+Cross Validation temporal,Cumplido,Se usa TimeSeriesSplit para evaluar estabilidad temporal.
