@@ -1,0 +1,19 @@
+{
+  "winner_family": "RandomForest",
+  "winner_score_pr_auc_cv": 0.6920481068949206,
+  "winner_params": {
+    "max_depth": 4,
+    "max_features": null,
+    "min_samples_leaf": 1,
+    "min_samples_split": 4,
+    "n_estimators": 54
+  },
+  "features": [
+    "lag_sent_1",
+    "lag_sent_2"
+  ],
+  "central_metric": "PR-AUC / Average Precision",
+  "validation": "StratifiedKFold complementario",
+  "random_seed": 42,
+  "generated_at": "2026-06-05T19:10:39.553859"
+}
