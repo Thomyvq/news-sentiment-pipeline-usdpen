@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard USD/PEN - Sentimiento Macroeconómico</title>
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+
+<body>
+
+<header>
+  <h1>Análisis de Sentimiento Macroeconómico</h1>
+  <h2>Dashboard experimental USD/PEN</h2>
+  <p>Noticias financieras → Sentimiento diario → Señales para tipo de cambio</p>
+</header>
+
+<section class="panel">
+  <h2>Filtros</h2>
+
+  <div class="filters">
+    <label>Fecha inicio:
+      <input type="date" id="startDate">
+    </label>
+
+    <label>Fecha fin:
+      <input type="date" id="endDate">
+    </label>
+
+    <label>Modelo:
+      <select id="modelSelect">
+        <option value="rf">Random Forest ganador</option>
+        <option value="var1">Var1 lag_sent_1 + lag_sent_2</option>
+        <option value="baseline">Baseline lag_sent_1</option>
+      </select>
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" id="onlyPredictions">
+      Solo días con predicción
+    </label>
+
+    <button onclick="applyFilters()">Actualizar</button>
+    <button onclick="downloadFilteredCSV()">Descargar CSV filtrado</button>
+  </div>
+</section>
+
+<section class="cards">
+  <div class="card">
+    <h3 id="kpiNews">-</h3>
+    <p>Noticias acumuladas</p>
+  </div>
+  <div class="card">
+    <h3 id="kpiSent">-</h3>
+    <p>Sentimiento promedio</p>
+  </div>
+  <div class="card">
+    <h3 id="kpiFx">-</h3>
+    <p>Variación USD/PEN</p>
+  </div>
+  <div class="card">
+    <h3 id="kpiHit">-</h3>
+    <p>Hit rate modelo</p>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Semáforo de predicciones</h2>
+  <p>
+    Verde = acierto. Rojo = error. Gris = sin predicción.
+  </p>
+  <div id="trafficLights" class="traffic-grid"></div>
+</section>
+
+<section class="panel">
+  <h2>Sentimiento diario vs USD/PEN real</h2>
+  <canvas id="chartSentFx"></canvas>
+</section>
+
+<section class="panel">
+  <h2>Composición diaria del sentimiento</h2>
+  <canvas id="chartShares"></canvas>
+</section>
+
+<section class="panel">
+  <h2>Probabilidad de subida del modelo seleccionado</h2>
+  <canvas id="chartProb"></canvas>
+</section>
+
+<section class="panel">
+  <h2>Ranking de días con mayor sentimiento</h2>
+  <div id="rankingSentiment"></div>
+</section>
+
+<section class="panel">
+  <h2>Top noticias del día seleccionado</h2>
+  <label>Selecciona fecha:
+    <select id="newsDateSelect" onchange="updateTopNews()"></select>
+  </label>
+  <div id="topNews"></div>
+</section>
+
+<section class="panel">
+  <h2>Explicación del modelo</h2>
+  <button onclick="toggleModelExplanation()">Ver explicación del modelo</button>
+  <div id="modelExplanation" class="hidden explanation">
+    <p>
+      El modelo ganador fue un Random Forest entrenado con dos variables temporales:
+      <strong>lag_sent_1</strong> y <strong>lag_sent_2</strong>.
+    </p>
+    <p>
+      Estas variables representan el sentimiento agregado del día anterior y de hace dos días.
+      La idea es capturar memoria temporal corta en el mercado cambiario.
+    </p>
+    <p>
+      El modelo no predice tres clases. Actualmente predice una variable binaria:
+      <strong>UP</strong> o <strong>NO_UP</strong>.
+    </p>
+    <p>
+      La métrica principal usada fue PR-AUC porque permite evaluar la capacidad del modelo
+      para detectar la clase positiva, es decir, días en los que el USD/PEN sube.
+    </p>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Tabla Top-K de configuraciones</h2>
+  <div class="table-wrap">
+    <table id="topKTable">
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Matriz de confusión interactiva</h2>
+  <p>Modelo seleccionado: <span id="cmModelName">Random Forest ganador</span></p>
+  <div id="confusionMatrix" class="cm-grid"></div>
+</section>
+
+<section class="panel">
+  <h2>Resultados Week 8</h2>
+  <div class="result-grid">
+    <div>
+      <h3>Validación Stratified K-Fold</h3>
+      <img src="assets/week8_stratified_cv_summary.png">
+    </div>
+    <div>
+      <h3>Random Search Best-so-Far</h3>
+      <img src="assets/week8_best_so_far_random_search.png">
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Tabla diaria filtrada</h2>
+  <div class="table-wrap">
+    <table id="dataTable">
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <p>
+    <a href="https://github.com/Thomyvq/news-sentiment-pipeline-usdpen" target="_blank">
+      Ver repositorio en GitHub
+    </a>
+  </p>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
