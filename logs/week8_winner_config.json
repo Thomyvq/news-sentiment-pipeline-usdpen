@@ -15,5 +15,5 @@
   "central_metric": "PR-AUC / Average Precision",
   "validation": "StratifiedKFold complementario",
   "random_seed": 42,
-  "generated_at": "2026-06-05T19:10:39.553859"
+  "generated_at": "2026-06-12T10:42:59.286848"
 }
