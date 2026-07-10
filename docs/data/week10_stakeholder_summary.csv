@@ -1,0 +1,3 @@
+﻿variant,n_responses,utility_mean,clarity_mean,confidence_mean,task_success_rate,task_time_mean_seconds
+Actual,5,4.8,5.0,4.2,1.0,29.6
+Baseline,5,3.4,3.4,3.0,0.8,43.6
